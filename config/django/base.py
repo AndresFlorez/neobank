@@ -31,10 +31,16 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 DJANGO_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 LOCAL_APPS = [
-    "neobank.users.apps.UsersConfig",
+    "neobank.users",
 ]
 
 THIRD_PARTY_APPS = [
@@ -47,17 +53,11 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     "whitenoise.runserver_nostatic",
-    "django.contrib.staticfiles",
+    *LOCAL_APPS,
     *DJANGO_APPS,
     *THIRD_PARTY_APPS,
-    *LOCAL_APPS,
 ]
 
 MIDDLEWARE = [
@@ -103,18 +103,6 @@ DATABASES = {
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
-if os.environ.get("GITHUB_WORKFLOW"):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "github_actions",
-            "USER": "postgres",
-            "PASSWORD": "postgres",
-            "HOST": "127.0.0.1",
-            "PORT": "5432",
-        }
-    }
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -152,9 +140,6 @@ USE_TZ = True
 LANGUAGES = [
     ('es', _('Español')),
     ('en-us', _('English')),
-    ('pt-br', _('Portuguese')),
-    ('it-it', _('Italian')),
-    ('fr-fr', _('French')),
 ]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
@@ -172,7 +157,9 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "neobank.api.exception_handlers.drf_default_with_modifications_exception_handler",
     # 'EXCEPTION_HANDLER': 'styleguide_example.api.exception_handlers.hacksoft_proposed_exception_handler',
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ],
 }
 
 APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")

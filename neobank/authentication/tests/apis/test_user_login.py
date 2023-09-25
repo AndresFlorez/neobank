@@ -11,14 +11,14 @@ class UserSessionLoginTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.session_login_url = reverse("api:authentication:session:login")
-        self.session_logout_url = reverse("api:authentication:session:logout")
-        self.me_url = reverse("api:authentication:me")
+        self.session_login_url = reverse("v1:authentication:session:login")
+        self.session_logout_url = reverse("v1:authentication:session:logout")
+        self.me_url = reverse("v1:authentication:me")
 
     def test_non_existing_user_cannot_login(self):
         self.assertEqual(0, BaseUser.objects.count())
 
-        data = {"email": "test@hacksoft.io", "password": "hacksoft"}
+        data = {"email": "test@test.com", "password": "hacksoft"}
 
         response = self.client.post(self.session_login_url, data)
 
@@ -28,10 +28,10 @@ class UserSessionLoginTests(TestCase):
         """
         1. Create user
         2. Assert login is OK
-        3. Call /api/auth/me
+        3. Call /v1/auth/me
         4. Assert valid response
         """
-        credentials = {"email": "test@hacksoft.io", "password": "password"}
+        credentials = {"email": "test@test.com", "password": "password"}
 
         user_create(**credentials)
 
@@ -65,7 +65,7 @@ class UserSessionLoginTests(TestCase):
         2. Login, can access APIs
         3. Logout, cannot access APIs
         """
-        credentials = {"email": "test@hacksoft.io", "password": "password"}
+        credentials = {"email": "test@test.com", "password": "password"}
 
         user_create(**credentials)
 
@@ -85,14 +85,14 @@ class UserJwtLoginTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.jwt_login_url = reverse("api:authentication:jwt:login")
-        self.jwt_logout_url = reverse("api:authentication:jwt:logout")
-        self.me_url = reverse("api:authentication:me")
+        self.jwt_login_url = reverse("v1:authentication:jwt:login")
+        self.jwt_logout_url = reverse("v1:authentication:jwt:logout")
+        self.me_url = reverse("v1:authentication:me")
 
     def test_non_existing_user_cannot_login(self):
         self.assertEqual(0, BaseUser.objects.count())
 
-        data = {"email": "test@hacksoft.io", "password": "hacksoft"}
+        data = {"email": "test@test.com", "password": "hacksoft"}
 
         response = self.client.post(self.jwt_login_url, data)
 
@@ -102,10 +102,10 @@ class UserJwtLoginTests(TestCase):
         """
         1. Create user
         2. Assert login is OK
-        3. Call /api/auth/me
+        3. Call /v1/auth/me
         4. Assert valid response
         """
-        credentials = {"email": "test@hacksoft.io", "password": "password"}
+        credentials = {"email": "test@test.com", "password": "password"}
 
         user_create(**credentials)
 
@@ -140,7 +140,7 @@ class UserJwtLoginTests(TestCase):
         2. Login, can access APIs
         3. Logout, cannot access APIs
         """
-        credentials = {"email": "test@hacksoft.io", "password": "password"}
+        credentials = {"email": "test@test.com", "password": "password"}
 
         user = user_create(**credentials)
 

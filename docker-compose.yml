@@ -15,8 +15,8 @@ services:
       context: .
       dockerfile: docker/local.Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/neobank_db
+    env_file:
+      .env.local
     volumes:
       - .:/app
     ports:

@@ -1,5 +1,5 @@
 from django.urls import path
 
-from .apis import UserListApi
+from .apis import UserSignUpApi
 
-urlpatterns = [path("", UserListApi.as_view(), name="list")]
+urlpatterns = [path("", UserSignUpApi.as_view(), name="sign-up-api")]

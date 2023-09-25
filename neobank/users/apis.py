@@ -1,5 +1,11 @@
+from django.conf import settings
 from rest_framework import serializers
-from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework import status
+from rest_framework.response import Response
+
+from rest_framework_jwt.settings import api_settings
 
 from neobank.api.pagination import (
     LimitOffsetPagination,
@@ -7,34 +13,26 @@ from neobank.api.pagination import (
 )
 from neobank.users.models import BaseUser
 from neobank.users.selectors import user_list
+from neobank.users.serializers import UserSerializer, UserProfileSerializer
 
 
-# TODO: When JWT is resolved, add authenticated version
-class UserListApi(APIView):
-    class Pagination(LimitOffsetPagination):
-        default_limit = 1
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-    class FilterSerializer(serializers.Serializer):
-        id = serializers.IntegerField(required=False)
-        is_admin = serializers.BooleanField(required=False, allow_null=True, default=None)
-        email = serializers.EmailField(required=False)
 
-    class OutputSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = BaseUser
-            fields = ("id", "email", "is_admin")
+class UserSignUpApi(generics.CreateAPIView):
+    queryset = BaseUser.objects.all()
+    serializer_class = UserSerializer
 
-    def get(self, request):
-        # Make sure the filters are valid, if passed
-        filters_serializer = self.FilterSerializer(data=request.query_params)
-        filters_serializer.is_valid(raise_exception=True)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
 
-        users = user_list(filters=filters_serializer.validated_data)
-
-        return get_paginated_response(
-            pagination_class=self.Pagination,
-            serializer_class=self.OutputSerializer,
-            queryset=users,
-            request=request,
-            view=self,
-        )
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+        
+        # Set token as a cookie
+        response = Response(serializer.data, status=status.HTTP_201_CREATED)
+        response.set_cookie(settings.JWT_AUTH_COOKIE, token)  # Set cookie
+        return response

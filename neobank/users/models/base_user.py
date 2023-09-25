@@ -1,7 +1,6 @@
 import uuid
 
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import BaseUserManager as BUM
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager as BUM
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.db import models
@@ -77,42 +76,3 @@ class BaseUser(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     def is_staff(self):
         return self.is_admin
-
-class UserProfile(BaseModel):
-
-    identification = models.CharField(max_length=100, blank=True, null=True, db_index=True)
-
-    telephone = models.CharField(
-        max_length=100,
-        blank=True,
-        validators=[PhoneRegexValidator()],
-        help_text=PhoneRegexValidator.HELP_TEXT,
-        verbose_name=_('Cell phone number'),
-    )
-
-    address = models.CharField(max_length=100, blank=True)
-
-    country = models.CharField(max_length=100, blank=True)
-
-
-    user = models.OneToOneField(
-        BaseUser,
-        on_delete=models.CASCADE,
-        blank=False,
-        verbose_name='user_profile',
-        related_name='user_profile',
-    )
-
-    def __str__(self):
-        return str(self.user.first_name + " " + self.user.last_name)
-
-    @property
-    def has_digital_certificate(self):
-        if self.certificate_set.all():
-            return True
-        else:
-            return False
-
-    def get_user_profile_by_tin(user_tin):
-        user_profile = UserProfile.objects.get(tax_number=user_tin)
-        return user_profile
