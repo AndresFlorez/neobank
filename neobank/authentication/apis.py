@@ -70,10 +70,3 @@ class UserJwtLogoutApi(ApiAuthMixin, APIView):
             response.delete_cookie(settings.JWT_AUTH["JWT_AUTH_COOKIE"])
 
         return response
-
-
-class UserMeApi(ApiAuthMixin, APIView):
-    def get(self, request):
-        data = user_get_login_data(user=request.user)
-
-        return Response(data)

@@ -3,7 +3,6 @@ from django.urls import include, path
 from .apis import (
     UserJwtLoginApi,
     UserJwtLogoutApi,
-    UserMeApi,
     UserSessionLoginApi,
     UserSessionLogoutApi,
 )
@@ -33,5 +32,4 @@ urlpatterns = [
             )
         ),
     ),
-    path("me/", UserMeApi.as_view(), name="me"),
 ]

@@ -41,6 +41,7 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     "neobank.users",
+    "neobank.bank_accounts",
 ]
 
 THIRD_PARTY_APPS = [
