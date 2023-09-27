@@ -1,2 +1,2 @@
-from .bank_account import BankAccountSerializer
+from .bank_account import BankAccountSerializer, BankAccountDetailSerializer
 from .transaction import TransactionSerializer

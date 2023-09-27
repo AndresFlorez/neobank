@@ -11,6 +11,10 @@ class Transaction(BaseModel):
         (WITHDRAWAL, WITHDRAWAL),
     )
 
-    bank_account = models.ForeignKey("bank_accounts.BankAccount", on_delete=models.CASCADE)
+    bank_account = models.ForeignKey(
+        "bank_accounts.BankAccount",
+        on_delete=models.CASCADE,
+        related_name="transactions",
+    )
     amount = models.FloatField(default=0)
-    transaction_type = models.CharField()
+    transaction_type = models.CharField(choices=TYPE_CHOICES)

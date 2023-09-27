@@ -1,6 +1,6 @@
 import uuid
 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager as BUM
+from django.contrib.auth.models import BaseUserManager as BUM
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 from django.conf import settings

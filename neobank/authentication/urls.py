@@ -3,23 +3,9 @@ from django.urls import include, path
 from .apis import (
     UserJwtLoginApi,
     UserJwtLogoutApi,
-    UserSessionLoginApi,
-    UserSessionLogoutApi,
 )
 
 urlpatterns = [
-    path(
-        "session/",
-        include(
-            (
-                [
-                    path("login/", UserSessionLoginApi.as_view(), name="login"),
-                    path("logout/", UserSessionLogoutApi.as_view(), name="logout"),
-                ],
-                "session",
-            )
-        ),
-    ),
     path(
         "jwt/",
         include(

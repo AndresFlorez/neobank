@@ -17,4 +17,4 @@ neobank-migrate:
 	@docker-compose run --rm django python ./manage.py migrate
 
 neobank-test:
-	@docker-compose run --rm django python ./manage.py test --settings=config.django.test --parallel --noinput --failfast --keepdb
+	@docker-compose run --rm django python ./manage.py test --settings=config.django.test --noinput --failfast --keepdb

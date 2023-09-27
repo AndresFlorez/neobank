@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 from neobank.common.models import BaseModel
-from neobank.common.validators import PhoneRegexValidator
 
 # Taken from here:
 # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#a-full-example
@@ -14,7 +13,15 @@ from neobank.common.validators import PhoneRegexValidator
 
 
 class BaseUserManager(BUM):
-    def create_user(self, email, is_active=True, is_admin=False, password=None, first_name : str = None, last_name : str = None):
+    def create_user(
+        self,
+        email,
+        is_active=True,
+        is_admin=False,
+        password=None,
+        first_name: str = None,
+        last_name: str = None,
+    ):
         if not email:
             raise ValueError("Users must have an email address")
 
@@ -23,7 +30,7 @@ class BaseUserManager(BUM):
             is_active=is_active,
             is_admin=is_admin,
             first_name=first_name,
-            last_name=last_name
+            last_name=last_name,
         )
 
         if password is not None:
@@ -36,13 +43,20 @@ class BaseUserManager(BUM):
 
         return user
 
-    def create_superuser(self, email : str, password : str = None, first_name : str = None, last_name : str = None):
+    def create_superuser(
+        self,
+        email: str,
+        password: str = None,
+        first_name: str = None,
+        last_name: str = None,
+    ):
         user = self.create_user(
             email=email,
             is_active=True,
             is_admin=True,
             password=password,
             first_name=first_name,
+            last_name=last_name,
         )
 
         user.is_superuser = True
