@@ -2,6 +2,7 @@ from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 from neobank.common import errors
 
+
 class PhoneRegexValidator(RegexValidator):
     HELP_TEXT = _(
         "You must enter the telephone code, followed by a space and then the cell phone number. " "Ex: +57 3016789870"

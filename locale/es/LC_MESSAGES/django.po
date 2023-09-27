@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-27 20:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Andrés Flórez <florezvalenciaandres@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: config/django/base.py:142
+msgid "Spanish"
+msgstr "Español"
+
+#: config/django/base.py:143
+msgid "English"
+msgstr "Ingles"
+
+#: neobank/common/errors.py:4
+msgid "Not enough balance."
+msgstr "Saldo insuficiente."
+
+#: neobank/common/errors.py:5
+msgid "Invalid bank account user."
+msgstr "Usuario de cuenta bancaria no válido."
+
+#: neobank/common/errors.py:6
+msgid "Account number must be ten digits."
+msgstr "El número de cuenta debe tener diez dígitos."
+
+#: neobank/common/validators.py:8
+msgid ""
+"You must enter the telephone code, followed by a space and then the cell "
+"phone number. Ex: +57 3016789870"
+msgstr ""
+"Se debe ingresar el indicativo telefónico, seguido de un espacio y luego el "
+"número de celular. Ej: +57 3016789870"

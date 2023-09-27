@@ -13,3 +13,6 @@ RUN pip install -r requirements/local.txt
 RUN mkdir /app
 WORKDIR /app
 ADD ./ /app/
+
+RUN apt-get update && apt-get install -y \
+gettext \

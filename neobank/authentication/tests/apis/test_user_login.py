@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
+from rest_framework import status
 from rest_framework.test import APIClient
 
 from neobank.users.models import BaseUser
@@ -37,7 +38,7 @@ class UserJwtLoginTests(TestCase):
 
         response = self.client.post(self.jwt_login_url, credentials)
 
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
         data = response.data
         self.assertIn("token", data)
@@ -48,7 +49,7 @@ class UserJwtLoginTests(TestCase):
         self.assertEqual(token, jwt_cookie.value)
 
         response = self.client.get(self.me_url)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
         # Now, try without session attached to the client
         client = APIClient()
@@ -58,7 +59,7 @@ class UserJwtLoginTests(TestCase):
 
         auth_headers = {"HTTP_AUTHORIZATION": f"{settings.JWT_AUTH['JWT_AUTH_HEADER_PREFIX']} {token}"}
         response = client.get(self.me_url, **auth_headers)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
     def test_existing_user_can_logout(self):
         """
@@ -73,10 +74,10 @@ class UserJwtLoginTests(TestCase):
         key_before_logout = user.jwt_key
 
         response = self.client.post(self.jwt_login_url, credentials)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
         response = self.client.get(self.me_url)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
         self.client.post(self.jwt_logout_url)
 

@@ -30,7 +30,9 @@ class BankAccountListCreateApi(ApiAuthMixin, generics.ListCreateAPIView):
             return BankAccountDetailSerializer
 
 
-class TransactionCreateApi(ApiAuthMixin, APIView):
+class TransactionCreateApi(ApiAuthMixin, generics.GenericAPIView):
+    serializer_class = TransactionSerializer
+
     def post(self, request, *args, **kwargs):
         serializer = TransactionSerializer(
             data=request.data,

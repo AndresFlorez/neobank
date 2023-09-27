@@ -24,7 +24,7 @@ env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = "=ug_ucl@yi6^mrcjyz%(u0%&g2adt#bz3@yos%#@*t#t!ypx=a"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DJANGO_DEBUG", default=True)
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -50,7 +50,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_extensions",
     "rest_framework_jwt",
-    'simple_history',
+    "simple_history",
+    "drf_yasg",
 ]
 
 INSTALLED_APPS = [
@@ -71,12 +72,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'simple_history.middleware.HistoryRequestMiddleware',
+    "simple_history.middleware.HistoryRequestMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
-
-print(os.path.join(APPS_DIR, "templates"))
 
 TEMPLATES = [
     {
@@ -139,27 +139,28 @@ USE_TZ = True
 
 # Languages to translate
 LANGUAGES = [
-    ('es', _('Español')),
-    ('en-us', _('English')),
+    ("es", _("Spanish")),
+    ("en-us", _("English")),
 ]
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'en-us'
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en-us"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "neobank.api.exception_handlers.drf_default_with_modifications_exception_handler",
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
 }
 
 APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
@@ -174,3 +175,26 @@ from config.settings.debug_toolbar.settings import *  # noqa
 from config.settings.debug_toolbar.setup import DebugToolbarSetup  # noqa
 
 INSTALLED_APPS, MIDDLEWARE = DebugToolbarSetup.do_settings(INSTALLED_APPS, MIDDLEWARE)
+
+# Swagger
+# -----------------------------------------------------------------------
+
+USE_SWAGGER = env.bool("USE_SWAGGER", default=False)
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "JWT [Bearer {JWT}]": {
+            "name": "Authorization",
+            "type": "apiKey",
+            "in": "header",
+        }
+    },
+    "DEFAULT_SCHEMA_CLASS": "neobank.common.utils.CustomAutoSchema",
+}
+
+SITE_ID = 1
+
+LOGIN_URL = "/monitoring/login/"
+LOGOUT_REDIRECT_URL = "/monitoring/login/"
+
+SWAGGER_URL = env.str("SWAGGER_BASE_URL", default="http://localhost:8000/")

@@ -86,7 +86,7 @@ class BankAccountApiTests(TestCase):
             self.bank_account_create_list_url,
             format="multipart",
         )
-        response_data = response.json()
+        response_data = response.json().get("results")
 
         bank_account_data = response_data[0]
         new_balance = self.initial_amount - self.debit_amount
@@ -212,7 +212,7 @@ class BankAccountApiTests(TestCase):
             self.bank_account_create_list_url,
             format="multipart",
         )
-        response_data = response.json()
+        response_data = response.json().get("results")
         self.assertEqual(len(response_data), 2)
 
         url = self.bank_account_create_list_url + "?account_number=0123456789"
@@ -220,6 +220,6 @@ class BankAccountApiTests(TestCase):
             url,
             format="multipart",
         )
-        response_data = response.json()
+        response_data = response.json().get("results")
 
         self.assertEqual(len(response_data), 1)

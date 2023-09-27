@@ -66,10 +66,10 @@ class UserAPiTests(TestCase):
         user = user_create(**credentials)
 
         response = self.client.post(self.jwt_login_url, credentials)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
         response = self.client.get(self.me_url)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         response_data = response.json()
         self.assertEqual(response_data.get("email"), user.email)
         self.assertTrue(response_data.get("is_active"))

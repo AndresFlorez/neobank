@@ -16,5 +16,14 @@ neobank-makemigrations:
 neobank-migrate:
 	@docker-compose run --rm django python ./manage.py migrate
 
-neobank-test:
+neobank-tests:
 	@docker-compose run --rm django python ./manage.py test --settings=config.django.test --noinput --failfast --keepdb
+
+neobank-collectstatic:
+	@docker-compose run --rm django python ./manage.py collectstatic
+
+neobank-makemessages:
+	@docker-compose run --rm django python ./manage.py makemessages -l es
+
+neobank-compilemessages:
+	@docker-compose run --rm django python ./manage.py compilemessages
